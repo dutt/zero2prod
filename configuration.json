@@ -1,0 +1,10 @@
+{
+    "application_port" : 8080,
+    "database" : {
+        "host" : "localhost",
+        "port" : 5432,
+        "username" : "postgres",
+        "password" : "passw00t",
+        "dbname" : "newsletter"
+    }
+}
