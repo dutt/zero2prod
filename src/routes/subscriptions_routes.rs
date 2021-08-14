@@ -3,10 +3,10 @@ use serde;
 
 #[derive(serde::Deserialize)]
 pub struct FormData {
-    email : String,
-    name : String
+    email: String,
+    name: String,
 }
 
-pub async fn subscriptions(form : web::Form<FormData>) -> impl Responder {
+pub async fn subscriptions(form: web::Form<FormData>) -> impl Responder {
     HttpResponse::Ok()
 }
