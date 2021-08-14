@@ -1,7 +1,7 @@
-use uuid::Uuid;
-use sqlx::{PgConnection, Executor, Connection, PgPool};
+use sqlx::{Connection, Executor, PgConnection, PgPool};
 use std::{net::TcpListener, vec};
-use zero2prod::configuration::{DatabaseSettings, get_configuration};
+use uuid::Uuid;
+use zero2prod::configuration::{get_configuration, DatabaseSettings};
 
 #[actix_rt::test]
 async fn health_check() {
@@ -72,13 +72,12 @@ async fn subscriptions_400() {
 }
 
 pub struct TestApp {
-    pub address : String,
-    pub pool : PgPool,
+    pub address: String,
+    pub pool: PgPool,
 }
 
 async fn spawn_app() -> TestApp {
-    let listener = TcpListener::bind("127.0.0.1:0")
-        .expect("Failed to bind random port");
+    let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port");
     let port = listener.local_addr().unwrap().port();
     let address = format!("http://127.0.0.1:{}", port);
 
@@ -90,13 +89,10 @@ async fn spawn_app() -> TestApp {
     let server = zero2prod::startup::run(listener, pool.clone()).expect("failed to create server");
     let _ = tokio::spawn(server);
 
-    TestApp {
-        address,
-        pool
-    }
+    TestApp { address, pool }
 }
 
-pub async fn setup_dbpool(cfg : &DatabaseSettings) -> PgPool {
+pub async fn setup_dbpool(cfg: &DatabaseSettings) -> PgPool {
     let mut connection = PgConnection::connect(&cfg.connection_string_without_db())
         .await
         .expect("Failed to connect to db");
